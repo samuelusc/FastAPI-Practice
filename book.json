@@ -1,0 +1,87 @@
+[
+    {
+        "title": "Clean Code",
+        "author": "Robert C. Martin",
+        "published_year": 2008,
+        "genre": "Programming",
+        "ISBN": "978-0132350884",
+        "pages": 464,
+        "publisher": "Prentice Hall",
+        "language": "English",
+        "rating": 4.7,
+        "price": 29.99,
+        "availability": {
+            "in_stock": true,
+            "copies_available": 12
+        },
+        "book_id": 1
+    },
+    {
+        "title": "The Pragmatic Programmer",
+        "author": "Andrew Hunt, David Thomas",
+        "published_year": 1999,
+        "genre": "Programming",
+        "ISBN": "978-0201616224",
+        "pages": 352,
+        "publisher": "Addison-Wesley Professional",
+        "language": "English",
+        "rating": 4.8,
+        "price": 39.99,
+        "availability": {
+            "in_stock": false,
+            "copies_available": 0
+        },
+        "book_id": 2
+    },
+    {
+        "title": "Introduction to Algorithms",
+        "author": "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein",
+        "published_year": 2009,
+        "genre": "Computer Science",
+        "ISBN": "978-0262033848",
+        "pages": 1312,
+        "publisher": "The MIT Press",
+        "language": "English",
+        "rating": 4.5,
+        "price": 89.99,
+        "availability": {
+            "in_stock": true,
+            "copies_available": 5
+        },
+        "book_id": 3
+    },
+    {
+        "title": "Design Patterns: Elements of Reusable Object-Oriented Software",
+        "author": "Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides",
+        "published_year": 1994,
+        "genre": "Software Engineering",
+        "ISBN": "978-0201633610",
+        "pages": 395,
+        "publisher": "Addison-Wesley Professional",
+        "language": "English",
+        "rating": 4.6,
+        "price": 49.99,
+        "availability": {
+            "in_stock": true,
+            "copies_available": 8
+        },
+        "book_id": 4
+    },
+    {
+        "title": "test-postman",
+        "author": "test-postman",
+        "published_year": 2024,
+        "genre": "Test",
+        "ISBN": "1325",
+        "pages": 220,
+        "publisher": "peter",
+        "language": "French",
+        "rating": 3.0,
+        "price": 10.0,
+        "availability": {
+            "in_stock": true,
+            "copies_available": 3
+        },
+        "book_id": 5
+    }
+]
