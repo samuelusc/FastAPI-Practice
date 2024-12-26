@@ -1,12 +1,9 @@
-from pydantic import BaseModel
-from typing import Dict
+from sqlmodel import SQLModel, Field, Relationship, Column, VARCHAR
+from passlib.context import CryptContext
 
-class Availability(BaseModel):
-    in_stock: bool
-    copies_available: int
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-
-class BookInput(BaseModel):
+class BookInput(SQLModel):
     title: str
     author: str
     published_year: int
@@ -17,65 +14,60 @@ class BookInput(BaseModel):
     language: str
     rating: float
     price: float
-    availability: Availability
+    in_stock: bool
+    copies_available: int
+    
     
     class Config:
         json_schema_extra = {
             "example": {
-                "title": "The Great Gatsby",
-                "author": "F. Scott Fitzgerald",
-                "published_year": 1925,
-                "genre": "Fiction",
-                "ISBN": "9780743273565",
-                "pages": 180,
-                "publisher": "Scribner",
-                "language": "English",
-                "rating": 3.9,
-                "price": 45,
-                "availability": {"in_stock": True, "copies_available": 5}
+            "title": "The Great Gatsby",
+            "author": "F. Scott Fitzgerald",
+            "published_year": 1925,
+            "genre": "Fiction",
+            "ISBN": "9780743273565",
+            "pages": 180,
+            "publisher": "Scribner",
+            "language": "English",
+            "rating": 3.9,
+            "price": 45,
+            "in_stock": True,
+            "copies_available": 5
             }
         }
 
-class BookOutput(BookInput):
-    book_id: int
-    
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "book_id": 1,
-                "title": "The Great Gatsby",
-                "author": "F. Scott Fitzgerald",
-                "published_year": 1925,
-                "genre": "Fiction",
-                "ISBN": "9780743273565",
-                "pages": 180,
-                "publisher": "Scribner",
-                "language": "English",
-                "rating": 3.9,
-                "price": 45,
-                "availability": {"in_stock": True, "copies_available": 5}
-            }
-        }
-    
 
-if __name__ == "__main__":
-    book = BookOutput(
-        book_id=11,
-        title="The Great Gatsby",
-        author="F. Scott Fitzgerald",
-        published_year=1925,
-        genre="Fiction",
-        ISBN="9780743273565",
-        pages=180,
-        publisher="Scribner",
-        language="English",
-        rating=3.9,
-        price=45,
-        availability={"in_stock": True, "copies_available": 5}
-    )
-    print(book)
-    print("-----------------")
-    print(book.model_dump())
-    print(book.model_dump_json())
-    print(book.ISBN)
-    print(book.book_id)
+class Book(BookInput, table=True):
+    book_id: int = Field(default=None, primary_key=True)
+    auth_id: int = Field(foreign_key="author.author_id")
+    author: "Author" = Relationship(back_populates="books")
+
+
+class AuthorInput(SQLModel):
+    name: str
+    birth_year: int
+    nationality: str
+
+class AuthorOutput(AuthorInput):
+    author_id: int
+    books: list[Book] = []
+
+class Author(AuthorInput, table=True):
+    author_id: int = Field(default=None, primary_key=True)
+    books: list[Book] = Relationship(back_populates="author")
+    
+    
+class User(SQLModel, table=True):
+    user_id: int = Field(default=None, primary_key=True)
+    username: str = Field(sa_column=Column(VARCHAR(30), unique=True, index=True))
+    password_hash: str = ''
+    
+    def set_password(self, password: str):
+        self.password_hash = pwd_context.hash(password)
+    
+    def verify_password(self, password: str):
+        return pwd_context.verify(password, self.password_hash)
+
+class UserOutput(SQLModel):
+    user_id: int
+    username: str
